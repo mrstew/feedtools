@@ -126,8 +126,7 @@ module FeedTools
     # True if the appropriate database table already exists
     def DatabaseFeedCache.table_exists?
       begin
-        result = ActiveRecord::Base.connection.select_one("show tables like '#{self.table_name()}'")
-        if result.size() >= 1
+        if ActiveRecord::Base.connection.table_exists?(self.table_name())
           return true
         else
           return false
@@ -138,5 +137,6 @@ module FeedTools
         return false
       end      
     end
+    
   end
 end
