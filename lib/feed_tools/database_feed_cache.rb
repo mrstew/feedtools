@@ -126,15 +126,17 @@ module FeedTools
     # True if the appropriate database table already exists
     def DatabaseFeedCache.table_exists?
       begin
-        ActiveRecord::Base.connection.select_one("select id, href, title, " +
-          "link, feed_data, feed_data_type, http_headers, last_retrieved " +
-          "from #{self.table_name()}")
+        result = ActiveRecord::Base.connection.select_one("show tables like '#{self.table_name()}'")
+        if result.size() >= 1
+          return true
+        else
+          return false
+        end
       rescue ActiveRecord::StatementInvalid
         return false
       rescue
         return false
-      end
-      return true
+      end      
     end
   end
 end
